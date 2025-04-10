@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1qwmbet" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.21.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
-  <bpmn:process id="Process_1gk3xig" isExecutable="true" camunda:historyTimeToLive="10">
+  <bpmn:process id="HelloTopicProcess" isExecutable="true" camunda:historyTimeToLive="10">
     <bpmn:startEvent id="hello-topic-impl" name="Hello Topic Imple">
       <bpmn:outgoing>Flow_1242l3g</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_0iz98cr" name="Hello Topic" camunda:type="external" camunda:topic="hellotopic">
+    <bpmn:serviceTask id="HelloTopic" name="Hello Topic" camunda:type="external" camunda:topic="hello">
       <bpmn:incoming>Flow_1242l3g</bpmn:incoming>
       <bpmn:outgoing>Flow_0tzyfdn</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1242l3g" sourceRef="hello-topic-impl" targetRef="Activity_0iz98cr" />
+    <bpmn:sequenceFlow id="Flow_1242l3g" sourceRef="hello-topic-impl" targetRef="HelloTopic" />
     <bpmn:userTask id="Activity_077lptu" name="Hello">
-      <bpmn:incoming>Flow_0tzyfdn</bpmn:incoming>
+      <bpmn:incoming>Flow_0yxjgwg</bpmn:incoming>
       <bpmn:outgoing>Flow_1oicoc3</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0tzyfdn" sourceRef="Activity_0iz98cr" targetRef="Activity_077lptu" />
+    <bpmn:sequenceFlow id="Flow_0tzyfdn" sourceRef="HelloTopic" targetRef="Activity_02msm41" />
     <bpmn:endEvent id="Event_1fv5u31">
       <bpmn:incoming>Flow_1jhc89b</bpmn:incoming>
     </bpmn:endEvent>
@@ -23,29 +23,37 @@
       <bpmn:incoming>Flow_1oicoc3</bpmn:incoming>
       <bpmn:outgoing>Flow_1jhc89b</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0yxjgwg" sourceRef="Activity_02msm41" targetRef="Activity_077lptu" />
+    <bpmn:serviceTask id="Activity_02msm41" name="Send Mail topic" camunda:type="external" camunda:topic="sendMail">
+      <bpmn:incoming>Flow_0tzyfdn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0yxjgwg</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1gk3xig">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="HelloTopicProcess">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="hello-topic-impl">
         <dc:Bounds x="179" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="157" y="142" width="84" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0iz98cr_di" bpmnElement="Activity_0iz98cr">
+      <bpmndi:BPMNShape id="Activity_0iz98cr_di" bpmnElement="HelloTopic">
         <dc:Bounds x="270" y="77" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_077lptu_di" bpmnElement="Activity_077lptu">
-        <dc:Bounds x="430" y="77" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1fv5u31_di" bpmnElement="Event_1fv5u31">
-        <dc:Bounds x="732" y="99" width="36" height="36" />
+        <dc:Bounds x="942" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ewpqvl_di" bpmnElement="Activity_0a5qttc">
-        <dc:Bounds x="570" y="77" width="100" height="80" />
+        <dc:Bounds x="770" y="77" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_077lptu_di" bpmnElement="Activity_077lptu">
+        <dc:Bounds x="610" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0n7rp94_di" bpmnElement="Activity_02msm41">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1242l3g_di" bpmnElement="Flow_1242l3g">
         <di:waypoint x="215" y="117" />
@@ -56,12 +64,16 @@
         <di:waypoint x="430" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1oicoc3_di" bpmnElement="Flow_1oicoc3">
-        <di:waypoint x="530" y="117" />
-        <di:waypoint x="570" y="117" />
+        <di:waypoint x="710" y="117" />
+        <di:waypoint x="770" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1jhc89b_di" bpmnElement="Flow_1jhc89b">
-        <di:waypoint x="670" y="117" />
-        <di:waypoint x="732" y="117" />
+        <di:waypoint x="870" y="117" />
+        <di:waypoint x="942" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yxjgwg_di" bpmnElement="Flow_0yxjgwg">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="610" y="117" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
